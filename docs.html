@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Plasma Admin - Documentation</title>
+  <link rel="icon" href="https://github.com/jj123llol/plasma-admin-web/raw/refs/heads/main/image-265.ico" type="image/x-icon">
+  <meta content="https://raw.githubusercontent.com/jj123llol/plasma-admin-web/refs/heads/main/image-265.png" property="og:image">
+  <meta content="Plasma Admin Documentation" property="og:site_name">
+  <meta content="Plasma Admin Documentation" property="og:title">
+  <meta content="Comprehensive guide for one of the most powerful admin scripts out there!" property="og:description">
+  <meta name="keywords" content="Plasma, Admin, Plasma Admin, Roblox Script, Documentation">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.150.1/three.min.js"></script>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    * {
+      font-family: "Inter", sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      overflow-x: hidden;
+      background-color: #0f0f1a;
+      color: #ffffff;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: #1A1A40;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: #39FF14;
+      border-radius: 3px;
+    }
+    
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    
+    .glass {
+      background: rgba(26, 26, 64, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(57, 255, 20, 0.2);
+    }
+    
+    .sidebar-bg {
+      background-color: #161635;
+      border: 1px solid rgba(57, 255, 20, 0.2);
+    }
+    
+    .neon-border {
+      position: relative;
+    }
+    
+    .neon-border::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      bottom: -1px;
+      border-radius: inherit;
+      border: 1px solid rgba(57, 255, 20, 0.3);
+      pointer-events: none;
+    }
+    
+    .hover-glow:hover {
+      box-shadow: 0 0 15px rgba(57, 255, 20, 0.6);
+      transition: all 0.3s ease;
+    }
+
+    .code-block {
+      background: rgba(15, 15, 26, 0.8);
+      border: 1px solid rgba(57, 255, 20, 0.3);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      overflow-x: auto;
+      color: #e2e2e2;
+      font-family: monospace;
+    }
+
+    .doc-section {
+      margin-bottom: 2rem;
+    }
+
+    .toc-link.active {
+      color: #39FF14;
+      font-weight: 600;
+    }
+
+    .toc-link:hover {
+      color: #39FF14;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="background"></canvas>
+  
+  <div class="min-h-screen flex flex-col">
+    <!-- Header Navigation -->
+    <header class="glass py-4 px-6 sticky top-0 z-50 border-b border-[#39FF14]/20">
+      <div class="container mx-auto flex justify-between items-center">
+        <div class="flex items-center">
+          <i class="fa-solid fa-bolt text-[#39FF14] text-3xl mr-3"></i>
+          <h1 class="text-2xl font-bold text-white">Plasma <span class="text-[#39FF14]">Admin</span></h1>
+        </div>
+        <nav class="hidden md:flex items-center space-x-8">
+          <a href="./Plasma Admin.html" class="flex items-center text-white hover:text-[#39FF14] transition-colors">
+            <i class="fa-solid fa-house mr-2"></i>
+            <span>Home</span>
+          </a>
+          <a href="docs.html" class="flex items-center text-[#39FF14] transition-colors">
+            <i class="fa-solid fa-book mr-2"></i>
+            <span>Docs</span>
+          </a>
+        </nav>
+        <button class="md:hidden text-white" id="mobile-menu-button">
+          <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile Navigation Menu (Hidden by default) -->
+    <div id="mobile-menu" class="md:hidden hidden glass border-b border-[#39FF14]/20 py-4">
+      <div class="container mx-auto px-6">
+        <nav class="flex flex-col space-y-4">
+          <a href="./Plasma Admin.html" class="flex items-center text-white hover:text-[#39FF14] transition-colors py-2">
+            <i class="fa-solid fa-house mr-2"></i>
+            <span>Home</span>
+          </a>
+          <a href="docs.html" class="flex items-center text-[#39FF14] transition-colors py-2">
+            <i class="fa-solid fa-book mr-2"></i>
+            <span>Docs</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12 flex-grow">
+      <div class="flex flex-col md:flex-row gap-8">
+        <!-- Sidebar with Table of Contents -->
+        <div class="md:w-1/4 sidebar-bg rounded-xl neon-border p-6 h-fit sticky top-28">
+          <h3 class="text-xl font-bold mb-6 flex items-center">
+            <i class="fa-solid fa-list text-[#39FF14] mr-3"></i>
+            Contents
+          </h3>
+          <nav class="space-y-5">
+            <div>
+              <a href="#introduction" class="toc-link text-white hover:text-[#39FF14] transition-colors flex items-center">
+                <div class="w-6 text-center mr-3">
+                  <i class="fa-solid fa-circle-info text-[#39FF14]"></i>
+                </div>
+                <span>Introduction</span>
+              </a>
+            </div>
+            <div>
+              <a href="#plugins" class="toc-link text-white hover:text-[#39FF14] transition-colors flex items-center">
+                <div class="w-6 text-center mr-3">
+                  <i class="fa-solid fa-puzzle-piece text-[#39FF14]"></i>
+                </div>
+                <span>Plugins</span>
+              </a>
+            </div>
+            <div>
+              <a href="#making-plugins" class="toc-link text-white hover:text-[#39FF14] transition-colors flex items-center">
+                <div class="w-6 text-center mr-3">
+                  <i class="fa-solid fa-code text-[#39FF14]"></i>
+                </div>
+                <span>Making Plugins</span>
+              </a>
+              <div class="pl-9 mt-2 space-y-2">
+                <a href="#adding-commands" class="toc-link text-[#39FF14] transition-colors text-sm">Adding Commands</a>
+                <a href="#notifications" class="toc-link text-gray-300 hover:text-[#39FF14] transition-colors text-sm">Notifications</a>
+                <a href="#posting-plugins" class="toc-link text-gray-300 hover:text-[#39FF14] transition-colors text-sm">Posting Plugins</a>
+              </div>
+            </div>
+            <div>
+              <a href="#commands" class="toc-link text-white hover:text-[#39FF14] transition-colors flex items-center">
+                <div class="w-6 text-center mr-3">
+                  <i class="fa-solid fa-terminal text-[#39FF14]"></i>
+                </div>
+                <span>Running Commands</span>
+              </a>
+            </div>
+            <div>
+              <a href="#settings" class="toc-link text-white hover:text-[#39FF14] transition-colors flex items-center">
+                <div class="w-6 text-center mr-3">
+                  <i class="fa-solid fa-gear text-[#39FF14]"></i>
+                </div>
+                <span>Settings</span>
+              </a>
+            </div>
+          </nav>
+        </div>
+
+        <!-- Main Documentation Content -->
+        <div class="md:w-3/4 space-y-8">
+          <div class="glass rounded-xl neon-border p-8 hover-glow transition-all">
+            <h2 class="text-3xl font-bold mb-2 flex items-center" id="introduction">
+              <i class="fa-solid fa-circle-info text-[#39FF14] mr-3"></i>
+              Introduction
+            </h2>
+            <div class="w-32 h-1 bg-[#39FF14]/40 rounded-full mb-6"></div>
+            <p class="text-gray-300 mb-4">
+              Welcome to the official documentation of Plasma Admin. To start off, Plasma Admin is a universal admin script with plugins and custom commands for certain games.
+            </p>
+            <p class="text-gray-300 mb-6">
+              Plasma Admin fully encourages the use and sharing of plugins, making it one of the most extensible admin scripts available for Roblox.
+            </p>
+            
+            <div class="bg-[#1A1A40]/60 border-l-4 border-[#39FF14] p-4 my-6 rounded">
+              <p class="text-white font-medium">Plasma Admin is designed to be user-friendly while providing powerful administration tools for Roblox game creators and moderators.</p>
+            </div>
+            
+            <h3 class="text-xl font-bold mb-4 mt-8 text-white flex items-center">
+              <i class="fa-solid fa-star text-[#39FF14] mr-2"></i>
+              Key Features
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="glass rounded-xl p-4 flex items-start">
+                <i class="fa-solid fa-check text-[#39FF14] mt-1 mr-3"></i>
+                <span>Universal compatibility across Roblox games</span>
+              </div>
+              <div class="glass rounded-xl p-4 flex items-start">
+                <i class="fa-solid fa-check text-[#39FF14] mt-1 mr-3"></i>
+                <span>Extendable plugin system</span>
+              </div>
+              <div class="glass rounded-xl p-4 flex items-start">
+                <i class="fa-solid fa-check text-[#39FF14] mt-1 mr-3"></i>
+                <span>Custom commands for specific games</span>
+              </div>
+              <div class="glass rounded-xl p-4 flex items-start">
+                <i class="fa-solid fa-check text-[#39FF14] mt-1 mr-3"></i>
+                <span>Customizable settings and interface</span>
+              </div>
+              <div class="glass rounded-xl p-4 flex items-start">
+                <i class="fa-solid fa-check text-[#39FF14] mt-1 mr-3"></i>
+                <span>Active community for plugin sharing</span>
+              </div>
+              <div class="glass rounded-xl p-4 flex items-start">
+                <i class="fa-solid fa-check text-[#39FF14] mt-1 mr-3"></i>
+                <span>Regular updates and improvements</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass rounded-xl neon-border p-8 hover-glow transition-all" id="plugins">
+            <h2 class="text-3xl font-bold mb-2 flex items-center">
+              <i class="fa-solid fa-puzzle-piece text-[#39FF14] mr-3"></i>
+              Plugins
+            </h2>
+            <div class="w-32 h-1 bg-[#39FF14]/40 rounded-full mb-6"></div>
+            <p class="text-gray-300 mb-6">
+              You can download or make plugins to extend Plasma Admin's functionality. Plugins are stored in a specific directory within your workspace.
+            </p>
+            
+            <div class="glass p-6 rounded-xl mb-6 border border-[#39FF14]/30">
+              <h4 class="text-lg font-medium text-white mb-4 flex items-center">
+                <i class="fa-solid fa-folder text-[#39FF14] mr-2"></i>
+                Plugin Location
+              </h4>
+              <div class="bg-[#0f0f1a] text-white p-4 rounded-xl font-mono text-sm border border-[#39FF14]/20">
+                workspace &gt; Plasma Admin &gt; plugins
+              </div>
+              <p class="text-gray-400 mt-3 text-sm">This is where you'll put the plugins you download or create.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+              <div class="glass rounded-xl p-6 hover-glow transition-all">
+                <div class="flex items-center mb-4">
+                  <i class="fa-solid fa-download text-[#39FF14] text-2xl mr-3"></i>
+                  <h4 class="text-lg font-medium">Download Plugins</h4>
+                </div>
+                <p class="text-gray-300 text-sm">
+                  Browse and download community-created plugins from our Discord server to enhance your admin experience here: <a href="https://discord.gg/KvsKDz6Uwq" class="text-[#39FF14] hover:underline">Plasma Admin Discord</a>
+                </p>
+              </div>
+              
+              <div class="glass rounded-xl p-6 hover-glow transition-all">
+                <div class="flex items-center mb-4">
+                  <i class="fa-solid fa-code text-[#39FF14] text-2xl mr-3"></i>
+                  <h4 class="text-lg font-medium">Create Plugins</h4>
+                </div>
+                <p class="text-gray-300 text-sm">
+                  Develop your own plugins with our simple API to add custom functionality to Plasma Admin. Share them with the community.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="glass rounded-xl neon-border p-8 hover-glow transition-all" id="making-plugins">
+            <h2 class="text-3xl font-bold mb-2 flex items-center">
+              <i class="fa-solid fa-code text-[#39FF14] mr-3"></i>
+              Making Plugins
+            </h2>
+            <div class="w-32 h-1 bg-[#39FF14]/40 rounded-full mb-6"></div>
+            
+            <div id="adding-commands" class="mb-8">
+              <h3 class="text-xl font-bold mb-4 text-white flex items-center">
+                <i class="fa-solid fa-plus-circle text-[#39FF14] mr-2"></i>
+                Adding Commands
+              </h3>
+              <p class="text-gray-300 mb-4">
+                The <code class="bg-[#1A1A40] text-[#39FF14] px-2 py-1 rounded">addcmd</code> function is used to make a command. The arguments are:
+              </p>
+              
+              <div class="glass rounded-xl p-6 mb-6 space-y-2">
+                <div class="flex items-start">
+                  <div class="w-28 flex-shrink-0">
+                    <span class="text-[#39FF14] font-semibold">Name:</span>
+                  </div>
+                  <div>
+                    <span class="text-gray-300">The command name (can include aliases separated by |)</span>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="w-28 flex-shrink-0">
+                    <span class="text-[#39FF14] font-semibold">Description:</span>
+                  </div>
+                  <div>
+                    <span class="text-gray-300">What shows up on the command list</span>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="w-28 flex-shrink-0">
+                    <span class="text-[#39FF14] font-semibold">Function:</span>
+                  </div>
+                  <div>
+                    <span class="text-gray-300">The function to execute when the command is called</span>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="w-28 flex-shrink-0">
+                    <span class="text-[#39FF14] font-semibold">Split Args:</span>
+                  </div>
+                  <div>
+                    <span class="text-gray-300">Whether to split the arguments or not (boolean)</span>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="w-28 flex-shrink-0">
+                    <span class="text-[#39FF14] font-semibold">Description:</span>
+                  </div>
+                  <div>
+                    <span class="text-gray-300">The Description of the command that shows on the cmdlist</span>
+                  </div>
+                </div>
+              </div>
+              
+              <p class="text-gray-300 mb-4">
+                The <code class="bg-[#1A1A40] text-[#39FF14] px-2 py-1 rounded">getPlayer</code> function returns a list of player instances with users that contain the input string in their display or username. You can also use special keywords like "all", "others", "random", or "me".
+              </p>
+              
+              <div class="code-block mb-6">
+                <pre><code>addcmd("kill", "kill (plr)", function(plr) 
+  local targets = getPlayer(plr) 
+  for _, target in pairs(targets) do 
+    targetChar = target.Character or target.CharacterAdded:Wait() 
+    targetChar:WaitForChild("Humanoid").Health = 0 
+  end 
+end, true, "Kills the given plr/plrs")</code></pre>
+              </div>
+              
+              <p class="text-gray-300 mb-4">
+                In this example, <code class="bg-[#1A1A40] text-[#39FF14] px-2 py-1 rounded">true</code> means the arguments will be split, allowing multiple arguments to be processed separately.
+              </p>
+              
+              <div class="code-block mb-6">
+                <pre><code>addcmd("print", "print (msg)", function(msg) 
+  print(msg) 
+end, false, "Prints the text entered to the console.")</code></pre>
+              </div>
+              
+              <p class="text-gray-300 mb-4">
+                Here, <code class="bg-[#1A1A40] text-[#39FF14] px-2 py-1 rounded">false</code> means the arguments will stay as one string instead of splitting up.
+              </p>
+              
+              <div class="glass p-6 rounded-xl border-l-4 border-[#39FF14] mb-6">
+                <div class="flex">
+                  <div class="flex-shrink-0">
+                    <i class="fa-solid fa-lightbulb text-[#39FF14] text-xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="text-lg font-medium text-white mb-2">Tip: Command Aliases</h3>
+                    <div class="text-gray-300">
+                      <p>The "|" symbol can be used to separate different aliases for the command.</p>
+                      <p class="mt-2 font-mono text-sm bg-[#1A1A40]/60 p-2 rounded-lg">addcmd("kill|ckill|krill", "kill (plr)", function()...)</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div id="notifications" class="mb-8">
+              <h3 class="text-xl font-bold mb-4 text-white flex items-center">
+                <i class="fa-solid fa-bell text-[#39FF14] mr-2"></i>
+                Creating Notifications
+              </h3>
+              <p class="text-gray-300 mb-4">
+                The <code class="bg-[#1A1A40] text-[#39FF14] px-2 py-1 rounded">createnotification</code> function is used to make notifications for your plugins:
+              </p>
+              
+              <div class="code-block mb-4">
+                <pre><code>createnotification("Admin", "This Is A Notification", 5)</code></pre>
+              </div>
+              
+              <p class="text-gray-300">
+                This creates a notification that says "Admin: This Is A Notification" that will display for five seconds.
+              </p>
+            </div>
+            
+            <div id="posting-plugins">
+              <h3 class="text-xl font-bold mb-4 text-white flex items-center">
+                <i class="fa-solid fa-share-nodes text-[#39FF14] mr-2"></i>
+                Posting Your Plugin
+              </h3>
+              <p class="text-gray-300 mb-4">
+                We have a plugins channel in the Discord server where you can share your creations with the community.
+              </p>
+              
+              <div class="glass p-6 rounded-xl border-l-4 border-red-500 mb-6">
+                <div class="flex">
+                  <div class="flex-shrink-0">
+                    <i class="fa-solid fa-triangle-exclamation text-red-500 text-xl"></i>
+                  </div>
+                  <div class="ml-4">
+                    <h3 class="text-lg font-medium text-white mb-2">Important</h3>
+                    <div class="text-gray-300">
+                      <p>To ensure safety, all plugins MUST be unobfuscated when posted to our community.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="glass rounded-xl neon-border p-8 hover-glow transition-all" id="commands">
+            <h2 class="text-3xl font-bold mb-2 flex items-center">
+              <i class="fa-solid fa-terminal text-[#39FF14] mr-3"></i>
+              Running Commands
+            </h2>
+            <div class="w-32 h-1 bg-[#39FF14]/40 rounded-full mb-6"></div>
+            <p class="text-gray-300 mb-4">
+              The <code class="bg-[#1A1A40] text-[#39FF14] px-2 py-1 rounded">runcommand</code> function can be used to run commands programmatically in Plasma Admin:
+            </p>
+            
+            <div class="code-block mb-6">
+              <pre><code>runcommand("re", {})</code></pre>
+            </div>
+            
+            <p class="text-gray-300 mb-6">
+              The table passed is the arguments of the command, while the string is the command to run.
+            </p>
+            
+            <div class="glass p-6 rounded-xl border border-[#39FF14]/30 mb-6">
+              <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                <i class="fa-solid fa-code-compare text-[#39FF14] mr-2"></i>
+                Command Examples
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="glass rounded-xl p-4 hover-glow transition-all">
+                  <code class="text-sm font-mono text-[#39FF14]">runcommand("kill", {"all"})</code>
+                  <p class="text-xs text-gray-400 mt-2">Kills all players in the game</p>
+                </div>
+                <div class="glass rounded-xl p-4 hover-glow transition-all">
+                  <code class="text-sm font-mono text-[#39FF14]">runcommand("speed", {"50"})</code>
+                  <p class="text-xs text-gray-400 mt-2">Sets your character's speed to 50</p>
+                </div>
+                <div class="glass rounded-xl p-4 hover-glow transition-all">
+                  <code class="text-sm font-mono text-[#39FF14]">runcommand("tp", {"me", "player2"})</code>
+                  <p class="text-xs text-gray-400 mt-2">Teleports you to player2</p>
+                </div>
+                <div class="glass rounded-xl p-4 hover-glow transition-all">
+                  <code class="text-sm font-mono text-[#39FF14]">runcommand("print", {"Hello World"})</code>
+                  <p class="text-xs text-gray-400 mt-2">Prints "Hello World" to the console</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="glass rounded-xl neon-border p-8 hover-glow transition-all" id="settings">
+            <h2 class="text-3xl font-bold mb-2 flex items-center">
+              <i class="fa-solid fa-gear text-[#39FF14] mr-3"></i>
+              Settings
+            </h2>
+            <div class="w-32 h-1 bg-[#39FF14]/40 rounded-full mb-6"></div>
+            
+            <div class="mb-8">
+              <h3 class="text-xl font-bold mb-4 text-white flex items-center">
+                <i class="fa-solid fa-file-code text-[#39FF14] mr-2"></i>
+                What is the "Plasma.Settings" file?
+              </h3>
+              <p class="text-gray-300 mb-4">
+                The file "Plasma.Settings" holds the settings for Plasma, including:
+              </p>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+                <div class="glass rounded-xl p-3 flex items-center justify-center">
+                  <span class="text-sm">GUI colors</span>
+                </div>
+                <div class="glass rounded-xl p-3 flex items-center justify-center">
+                  <span class="text-sm">Commands to autorun</span>
+                </div>
+                <div class="glass rounded-xl p-3 flex items-center justify-center">
+                  <span class="text-sm">FOV settings</span>
+                </div>
+                <div class="glass rounded-xl p-3 flex items-center justify-center">
+                  <span class="text-sm">Theme options</span>
+                </div>
+                <div class="glass rounded-xl p-3 flex items-center justify-center">
+                  <span class="text-sm">Plugin configurations</span>
+                </div>
+                <div class="glass rounded-xl p-3 flex items-center justify-center">
+                  <span class="text-sm">And more...</span>
+                </div>
+              </div>
+              <p class="text-gray-300">
+                You can share these files among friends or with the server to share your settings with them.
+              </p>
+            </div>
+            
+            <div class="mb-8">
+              <h3 class="text-xl font-bold mb-4 text-white flex items-center">
+                <i class="fa-solid fa-sliders text-[#39FF14] mr-2"></i>
+                How to change settings?
+              </h3>
+              
+              <div class="mb-6">
+                <h4 class="text-lg font-semibold text-white mb-3 flex items-center">
+                  <i class="fa-solid fa-pen-to-square text-[#39FF14] mr-2"></i>
+                  Manually
+                </h4>
+                <p class="text-gray-300 mb-4">
+                  You can open the "Plasma.Settings" file with notepad or any text editor and manually change the settings from there.
+                </p>
+                <div class="glass p-4 rounded-xl border border-[#39FF14]/20">
+                  <p class="text-sm text-gray-300 flex items-center">
+                    <i class="fa-solid fa-file-lines text-[#39FF14] mr-2"></i>
+                    Edit the Plasma.Settings file directly with your preferred text editor
+                  </p>
+                </div>
+              </div>
+              
+              <div class="mb-6">
+                <h4 class="text-lg font-semibold text-white mb-3 flex items-center">
+                  <i class="fa-solid fa-code text-[#39FF14] mr-2"></i>
+                  Via Script
+                </h4>
+                <p class="text-gray-300 mb-4">
+                  You can also edit the file via a script. After the loadstring, you can modify settings programmatically:
+                </p>
+                
+                <div class="code-block mb-4">
+                  <pre><code>plasmaadmin['settings']['setting'] = value
+update_settings()</code></pre>
+                </div>
+                
+                <p class="text-gray-300 mb-3">For example:</p>
+                
+                <div class="code-block mb-4">
+                  <pre><code>plasmaadmin['settings']['skip_loadscreen'] = true
+update_settings()</code></pre>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-8">
+              <h3 class="text-xl font-bold mb-4 text-white flex items-center">
+                <i class="fa-solid fa-puzzle-piece text-[#39FF14] mr-2"></i>
+                Using settings in a plugin
+              </h3>
+              <p class="text-gray-300 mb-4">
+                If you are a plugin developer, you can store settings within Plasma Admin's settings file using the following functions:
+              </p>
+              
+              <div class="space-y-6">
+                <div class="glass p-5 rounded-xl border border-[#39FF14]/20 hover-glow transition-all">
+                  <h4 class="text-lg font-semibold text-white mb-3 flex items-center">
+                    <i class="fa-solid fa-arrows-rotate text-[#39FF14] mr-2"></i>
+                    update_settings function
+                  </h4>
+                  <p class="text-gray-300 mb-3">
+                    The <code class="bg-[#1A1A40] text-[#39FF14] px-2 py-1 rounded">update_settings</code> function saves the current settings to the "Plasma.Settings" file.
+                  </p>
+                  
+                  <div class="code-block">
+                    <pre><code>-- After changing a setting
+update_settings()</code></pre>
+                  </div>
+                </div>
+                
+                <div class="glass p-5 rounded-xl border border-[#39FF14]/20 hover-glow transition-all">
+                  <h4 class="text-lg font-semibold text-white mb-3 flex items-center">
+                    <i class="fa-solid fa-table-cells text-[#39FF14] mr-2"></i>
+                    set_settings_table function
+                  </h4>
+                  <p class="text-gray-300 mb-3">
+                    To add tables for RGB or any other settings, you can use:
+                  </p>
+                  
+                  <div class="code-block mb-3">
+                    <pre><code>set_settings_table("table", values)</code></pre>
+                  </div>
+                  
+                  <p class="text-gray-300 mb-3">For example:</p>
+                  
+                  <div class="code-block mb-3">
+                    <pre><code>set_settings_table('cmdbar_color', 0, 0, 0)</code></pre>
+                  </div>
+                  
+                  <p class="text-gray-300">
+                    This would set the cmdbar_color value to {0, 0, 0}
+                  </p>
+                </div>
+                
+                <div class="glass p-5 rounded-xl border border-[#39FF14]/20 hover-glow transition-all">
+                  <h4 class="text-lg font-semibold text-white mb-3 flex items-center">
+                    <i class="fa-solid fa-trash text-[#39FF14] mr-2"></i>
+                    delitem_settings_table function
+                  </h4>
+                  <p class="text-gray-300 mb-3">
+                    The <code class="bg-[#1A1A40] text-[#39FF14] px-2 py-1 rounded">delitem_settings_table</code> function deletes a value from a table.
+                  </p>
+                  
+                  <p class="text-gray-300 mb-3">For example, if you have a setting called "test_table" that looks like this:</p>
+                  
+                  <div class="code-block mb-3">
+                    <pre><code>['test_table'] = {
+    ['bleh'] = "value",
+    ['blez'] = "value"
+}</code></pre>
+                  </div>
+                  
+                  <p class="text-gray-300 mb-3">You could do:</p>
+                  
+                  <div class="code-block mb-3">
+                    <pre><code>delitem_settings_table('test_table', 'bleh')</code></pre>
+                  </div>
+                  
+                  <p class="text-gray-300 mb-3">And it would turn the table into this:</p>
+                  
+                  <div class="code-block">
+                    <pre><code>['test_table'] = {
+    ['blez'] = "value"
+}</code></pre>
+                  </div>
+                </div>
+                
+                <div class="glass p-5 rounded-xl border border-[#39FF14]/20 hover-glow transition-all">
+                  <h4 class="text-lg font-semibold text-white mb-3 flex items-center">
+                    <i class="fa-solid fa-download text-[#39FF14] mr-2"></i>
+                    get_settings_table function
+                  </h4>
+                  <p class="text-gray-300 mb-3">
+                    The <code class="bg-[#1A1A40] text-[#39FF14] px-2 py-1 rounded">get_settings_table</code> function can be used to get a Color3 or Vector3 from a table.
+                  </p>
+                  
+                  <div class="code-block mb-3">
+                    <pre><code>get_settings_table('cmdbar_color', "color3") -- color3 could also be vector3</code></pre>
+                  </div>
+                  
+                  <p class="text-gray-300">
+                    This would return Color3.fromRGB of the table cmdbar_color
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-6">
+              <h3 class="text-xl font-bold mb-4 text-white flex items-center">
+                <i class="fa-solid fa-circle-plus text-[#39FF14] mr-2"></i>
+                Adding settings
+              </h3>
+              
+              <div class="glass p-5 rounded-xl border border-[#39FF14]/20 hover-glow transition-all mb-6">
+                <h4 class="text-lg font-semibold text-white mb-3 flex items-center">
+                  <i class="fa-solid fa-file-pen text-[#39FF14] mr-2"></i>
+                  Adding a setting manually
+                </h4>
+                <p class="text-gray-300">
+                  Open the "Plasma.Settings" file and add to it directly.
+                </p>
+              </div>
+              
+              <div class="glass p-5 rounded-xl border border-[#39FF14]/20 hover-glow transition-all">
+                <h4 class="text-lg font-semibold text-white mb-3 flex items-center">
+                  <i class="fa-solid fa-code text-[#39FF14] mr-2"></i>
+                  Via script
+                </h4>
+                <div class="code-block mb-3">
+                  <pre><code>plasmaadmin['settings']['setting'] = value
+update_settings()</code></pre>
+                </div>
+                
+                <p class="text-gray-300 mb-3">For example:</p>
+                
+                <div class="code-block">
+                  <pre><code>plasmaadmin['settings']['speed'] = 7546456453243436578
+update_settings()</code></pre>
+                </div>
+              </div>
+            </div>
+            
+            <div class="glass p-6 rounded-xl border-l-4 border-[#39FF14] mb-6">
+              <div class="flex items-start">
+                <div class="flex-shrink-0 mt-1">
+                  <i class="fa-solid fa-lightbulb text-[#39FF14] text-xl"></i>
+                </div>
+                <div class="ml-4">
+                  <h3 class="text-lg font-semibold text-white mb-3">Community Guidelines</h3>
+                  <p class="text-gray-300 mb-4">
+                    When sharing plugins or settings with the Plasma Admin community, please follow these guidelines:
+                  </p>
+                  <ul class="space-y-2 text-gray-300">
+                    <li class="flex items-start">
+                      <i class="fa-solid fa-circle-check text-[#39FF14] mt-1 mr-2"></i>
+                      <span>Keep all plugins unobfuscated for safety and transparency</span>
+                    </li>
+                    <li class="flex items-start">
+                      <i class="fa-solid fa-circle-check text-[#39FF14] mt-1 mr-2"></i>
+                      <span>Provide clear documentation of what your plugin does</span>
+                    </li>
+                    <li class="flex items-start">
+                      <i class="fa-solid fa-circle-check text-[#39FF14] mt-1 mr-2"></i>
+                      <span>Credit other developers if you've built upon their work</span>
+                    </li>
+                    <li class="flex items-start">
+                      <i class="fa-solid fa-circle-check text-[#39FF14] mt-1 mr-2"></i>
+                      <span>Test your plugins thoroughly before sharing</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass border-t border-[#39FF14]/20 py-8 mt-12">
+      <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <div class="flex items-center mb-4">
+              <i class="fa-solid fa-bolt text-[#39FF14] text-2xl mr-2"></i>
+              <h2 class="text-xl font-bold">Plasma Admin</h2>
+            </div>
+            <p class="text-gray-400 text-sm">
+              The ultimate command center for CCP enthusiasts, featuring over 110 universal commands to enhance your exploiting experience.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+            <ul class="space-y-2 text-gray-400">
+              <li><a href="./Plasma Admin.html" class="hover:text-[#39FF14] transition-colors">Home</a></li>
+              <li><a href="docs.html" class="hover:text-[#39FF14] transition-colors">Documentation</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Community</h3>
+            <ul class="space-y-2 text-gray-400">
+              <li><a href="https://plasmaadmin.xyz/invite" class="hover:text-[#39FF14] transition-colors">Discord</a></li>
+              <li><a href="https://www.youtube.com/channel/UCBADtyq30Cr-VhPnJL7MZEA" class="hover:text-[#39FF14] transition-colors">YouTube</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Resources</h3>
+            <ul class="space-y-2 text-gray-400">
+              <li><a href="#plugins" class="hover:text-[#39FF14] transition-colors">Plugins</a></li>
+              <li><a href="#commands" class="hover:text-[#39FF14] transition-colors">Commands</a></li>
+              <li><a href="#settings" class="hover:text-[#39FF14] transition-colors">Settings</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-[#39FF14]/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p class="text-gray-400 text-sm">© 2025 Plasma Admin. All rights reserved.</p>
+          <div class="flex space-x-4 mt-4 md:mt-0">
+            <a href="https://plasmaadmin.xyz/invite" class="text-gray-400 hover:text-[#39FF14] transition-colors">
+              <i class="fab fa-discord text-xl"></i>
+            </a>
+            <a href="https://www.youtube.com/channel/UCBADtyq30Cr-VhPnJL7MZEA" class="text-gray-400 hover:text-[#39FF14] transition-colors">
+              <i class="fab fa-youtube text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-[#39FF14] transition-colors">
+              <i class="fab fa-github text-xl"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Mobile menu toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      menuButton.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      // Active link highlighting
+      const sections = document.querySelectorAll('div[id]');
+      const navLinks = document.querySelectorAll('.toc-link');
+
+      function setActiveLink() {
+        let currentSection = '';
+        
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          if (pageYOffset >= (sectionTop - 200)) {
+            currentSection = section.getAttribute('id');
+          }
+        });
+        
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === `#${currentSection}`) {
+            link.classList.add('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', setActiveLink);
+      setActiveLink();
+
+      // Three.js Background
+      const canvas = document.getElementById('background');
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+      
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      
+      // Particles
+      const particlesGeometry = new THREE.BufferGeometry();
+      const particlesCount = 300;
+      
+      const posArray = new Float32Array(particlesCount * 3);
+      
+      for(let i = 0; i < particlesCount * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 15;
+      }
+      
+      particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+      
+      // Materials
+      const particlesMaterial = new THREE.PointsMaterial({
+        size: 0.02,
+        color: 0x39FF14,
+        transparent: true,
+        opacity: 0.6
+      });
+      
+      // Mesh
+      const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+      scene.add(particlesMesh);
+      
+      // Lines for connecting dots
+      const linesMaterial = new THREE.LineBasicMaterial({ 
+        color: 0x39FF14,
+        transparent: true,
+        opacity: 0.2
+      });
+      
+      // Position camera
+      camera.position.z = 5;
+      
+      // Handle resizing
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+      
+      // Mouse movement effect
+      let mouseX = 0;
+      let mouseY = 0;
+      
+      function onDocumentMouseMove(event) {
+        mouseX = (event.clientX - window.innerWidth / 2) / 100;
+        mouseY = (event.clientY - window.innerHeight / 2) / 100;
+      }
+      
+      document.addEventListener('mousemove', onDocumentMouseMove);
+      
+      // Connect particles with lines when they're close
+      const lineMeshes = [];
+      
+      function connectParticles() {
+        const positions = particlesGeometry.attributes.position.array;
+        
+        // Remove previous lines
+        for(let i = 0; i < lineMeshes.length; i++) {
+          scene.remove(lineMeshes[i]);
+        }
+        lineMeshes.length = 0;
+        
+        // Check distances and connect with lines
+        for(let i = 0; i < particlesCount; i++) {
+          for(let j = i + 1; j < particlesCount; j++) {
+            const x1 = positions[i * 3];
+            const y1 = positions[i * 3 + 1];
+            const z1 = positions[i * 3 + 2];
+            
+            const x2 = positions[j * 3];
+            const y2 = positions[j * 3 + 1];
+            const z2 = positions[j * 3 + 2];
+            
+            const distance = Math.sqrt(
+              Math.pow(x2 - x1, 2) +
+              Math.pow(y2 - y1, 2) +
+              Math.pow(z2 - z1, 2)
+            );
+            
+            if(distance < 2) {
+              const lineGeometry = new THREE.BufferGeometry().setFromPoints([
+                new THREE.Vector3(x1, y1, z1),
+                new THREE.Vector3(x2, y2, z2)
+              ]);
+              
+              const lineMesh = new THREE.Line(lineGeometry, linesMaterial);
+              lineMesh.material.opacity = (2 - distance) / 10;
+              scene.add(lineMesh);
+              lineMeshes.push(lineMesh);
+            }
+          }
+        }
+      }
+      
+      // Animation Loop
+      function animate() {
+        requestAnimationFrame(animate);
+        
+        particlesMesh.rotation.x += 0.0003;
+        particlesMesh.rotation.y += 0.0003;
+        
+        // Add mouse interaction
+        particlesMesh.rotation.y += mouseX * 0.0005;
+        particlesMesh.rotation.x += mouseY * 0.0005;
+        
+        // Connect particles occasionally to avoid performance issues
+        if(Math.random() > 0.97) {
+          connectParticles();
+        }
+        
+        renderer.render(scene, camera);
+      }
+      
+      animate();
+    });
+  </script>
+</body>
+</html> 
