@@ -27,7 +27,7 @@ Keylabel.BorderSizePixel = 0
 Keylabel.Position = UDim2.new(0.5, 0, 0.100000001, 0)
 Keylabel.Size = UDim2.new(1, 0, 0, 50)
 Keylabel.Font = Enum.Font.Gotham
-Keylabel.Text = "Enter key:"
+Keylabel.Text = "https://plasmaadmin.xyz/key"
 Keylabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 Keylabel.TextSize = 29.000
 Keylabel.TextWrapped = true
@@ -48,10 +48,10 @@ Keybox.Text = ""
 Keybox.TextColor3 = Color3.fromRGB(255, 255, 255)
 Keybox.TextSize = 19.000
 
-Keybox.FocusLost:Connect(function(eP, inp)
+Keybox.FocusLost:Connect(function(eP)
 	if eP then
 		key = Keybox.Text
-  end
+        end
 end)
 	
 repeat task.wait() until key ~= nil
