@@ -55,6 +55,8 @@ Keybox.FocusLost:Connect(function(eP, inp)
 end)
 	
 repeat task.wait() until key ~= nil
+
+Key:Destroy()
 	
 script_key = key
 
